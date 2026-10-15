@@ -169,15 +169,23 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
   .top h1{font-family:var(--fd);font-weight:600;font-size:22px;color:var(--ink);margin:0;line-height:1.2}
   .top .k{font-family:var(--fe);font-style:italic;font-size:13px;color:var(--dim)}
   .top .fb{margin-left:auto;font-size:13px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
-  .sheet{position:fixed;inset:0;z-index:50;background:var(--paper);overflow:auto;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px))}
-  .sheet .rail{display:flex;position:static;height:auto;border:0;padding:0;overflow:visible}
+  /* 고정 시트는 루트의 안전 영역 여백을 받지 못한다. 위아래 여백을 시트가 직접 챙긴다. */
+  .sheet{position:fixed;inset:0;z-index:50;background:var(--paper);overflow:auto;
+    padding:calc(16px + env(safe-area-inset-top,0px)) 20px 0;display:flex;flex-direction:column}
+  .sheet .rail{display:flex;position:static;height:auto;border:0;padding:0;overflow:visible;flex:0 0 auto}
   .sheet .mast{display:none}
-  .sheet .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .sheet .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
   .sheet .sh h2{font-family:var(--fd);font-size:18px;color:var(--ink);margin:0}
-  .sheet .sh button{font-size:13px;text-decoration:underline;text-underline-offset:3px;color:var(--ink)}
+  .sheet .sh button{font-size:14px;color:var(--ink);min-height:44px;min-width:44px;padding:8px 14px;
+    border:1px solid var(--line2);border-radius:8px;margin-right:-6px}
+  /* 아래쪽 닫기 바: 엄지가 닿는 자리. 스크롤해도 바닥에 붙어 있다. */
+  .sheet .sf{position:sticky;bottom:0;margin:auto -20px 0;padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));
+    background:var(--paper);border-top:1px solid var(--line)}
+  .sheet .sf button{display:block;width:100%;min-height:50px;font-size:15px;font-weight:600;
+    color:var(--onink);background:var(--ink);border-radius:10px}
   .item.t1 .ttl{font-size:18.5px}
 }
-@media (min-width:861px){ .sheet{display:contents} .sheet .sh{display:none} }
+@media (min-width:861px){ .sheet{display:contents} .sheet .sh,.sheet .sf{display:none} }
 @media (prefers-reduced-motion:no-preference){ .item{transition:opacity .15s} }
 </style>
 
@@ -185,7 +193,7 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
 <body>
 <div class="app">
   <div class="sheet" id="sheet">
-    <div class="sh"><h2>필터</h2><button id="shClose">닫기</button></div>
+    <div class="sh"><h2>필터</h2><button id="shClose" data-close="1">닫기</button></div>
     <aside class="rail">
       <div class="mast">
         <div class="kicker">Weekly Journal Digest</div>
@@ -202,6 +210,7 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
         <span>갱신 <span id="gen"></span><br>원고 PDF와 리포트는 데스크톱 서가에서 본다</span>
       </div>
     </aside>
+    <div class="sf"><button data-close="1">필터 닫기</button></div>
   </div>
 
   <main class="main">
@@ -385,7 +394,7 @@ function find(k){ for(var i=0;i<P.length;i++) if(kof(P[i])===k) return P[i]; ret
 /* 이벤트 */
 document.getElementById('sheet').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
-  if(b.id==='shClose'){ $('#sheet').hidden = true; return; }
+  if(b.id==='shClose' || b.dataset.close){ $('#sheet').hidden = true; return; }
   if(b.id==='more'){ $('#fTg').classList.toggle('open'); rail(); return; }
   if(b.id==='pTh'){
     var cur = document.documentElement.getAttribute('data-theme');
