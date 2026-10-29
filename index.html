@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#FBFBF9" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111417" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,88 +21,100 @@ img{max-width:100%}
 <title>저널 서가</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Gowun+Batang:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* 화면 셋: 홈(저널 표지 진열) | 저널별 | 논문 한 편. 전체 서가는 예전 화면을 그대로 둔다.
-   주소의 # 뒤로 화면을 가른다. #/  #/j/{저널}/{주차}  #/p/{논문 키}  #/all */
+   주소의 # 뒤로 화면을 가른다. #/  #/j/{저널}/{주차}  #/p/{논문 키}  #/all
+   타이포는 The New Yorker를 따른다. 흰 바탕, 검정 글씨, 굵지 않은 세리프 제목, 강조색은 화면마다 하나(그 저널 색). */
 :root{
-  --paper:#FBFBF9; --paper2:#F3F3EF; --ink:#15191F; --body:#3A3F47; --dim:#6F757E; --faint:#A1A6AD;
-  --line:#E4E4DF; --line2:#C9C9C2; --mark:#8C6A2A; --onink:#FBFBF9; --danger:#8A2B16;
-  --shadow:0 1px 1px rgba(20,25,31,.08),0 10px 22px -12px rgba(20,25,31,.45);
-  --fd:"Noto Serif KR",ui-serif,"Apple SD Gothic Neo","Malgun Gothic",serif;
-  --fb:"IBM Plex Sans KR",-apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-  --fe:"Newsreader",ui-serif,Georgia,"Times New Roman",serif;
+  --paper:#FFFFFF; --paper2:#F5F4F0; --ink:#121212; --body:#2A2A2A; --dim:#6B6B6B; --faint:#A3A3A3;
+  --line:#E4E4E4; --line2:#C9C9C9; --mark:#8C6A2A; --onink:#FFFFFF; --danger:#B3261E;
+  --shadow:0 1px 1px rgba(0,0,0,.08),0 10px 22px -12px rgba(0,0,0,.45);
+  --fk:"Gowun Batang";
+  --fd:var(--fk),"Apple SD Gothic Neo","Malgun Gothic",serif;
+  --fe:"Libre Caslon Text",var(--fk),Georgia,"Times New Roman",serif;
+  --fx:"Libre Caslon Display","Libre Caslon Text",var(--fk),Georgia,serif;
+  --fb:"Pretendard Variable",Pretendard,-apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --rail:236px; --read:560px;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#111417; --paper2:#191D22; --ink:#ECEAE4; --body:#C4C2BB; --dim:#8E9199; --faint:#5F636B;
-  --line:#262A30; --line2:#363B43; --mark:#C7A45A; --onink:#111417; --danger:#E8846A; color-scheme:dark;
+  --paper:#121212; --paper2:#1C1C1B; --ink:#F2F0EB; --body:#D7D4CD; --dim:#9C9991; --faint:#66635D;
+  --line:#2A2A2A; --line2:#3B3B3B; --mark:#C7A45A; --onink:#121212; --danger:#F08A7E; color-scheme:dark;
   --shadow:0 1px 1px rgba(0,0,0,.5),0 10px 22px -12px rgba(0,0,0,.9);
 }}
 :root[data-theme="dark"]{
-  --paper:#111417; --paper2:#191D22; --ink:#ECEAE4; --body:#C4C2BB; --dim:#8E9199; --faint:#5F636B;
-  --line:#262A30; --line2:#363B43; --mark:#C7A45A; --onink:#111417; --danger:#E8846A; color-scheme:dark;
+  --paper:#121212; --paper2:#1C1C1B; --ink:#F2F0EB; --body:#D7D4CD; --dim:#9C9991; --faint:#66635D;
+  --line:#2A2A2A; --line2:#3B3B3B; --mark:#C7A45A; --onink:#121212; --danger:#F08A7E; color-scheme:dark;
   --shadow:0 1px 1px rgba(0,0,0,.5),0 10px 22px -12px rgba(0,0,0,.9);
 }
+/* 강조색: 저널 색을 조금 어둡게(야간에는 밝게) 눌러 글자색으로 쓴다. */
+.acc{--ac:var(--jc);--ac:color-mix(in srgb,var(--jc) 82%,#000)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .acc{--ac:color-mix(in srgb,var(--jc) 62%,#fff)} }
+:root[data-theme="dark"] .acc{--ac:color-mix(in srgb,var(--jc) 62%,#fff)}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
 body{background:var(--paper);color:var(--body);font-family:var(--fb);font-size:15px;line-height:1.7;
-  -webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums;-webkit-tap-highlight-color:transparent}
+  -webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 button{font:inherit;cursor:pointer;color:inherit;background:none;border:0;padding:0}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--mark);outline-offset:2px}
 [hidden]{display:none!important}
 
 /* ---------- 공통 조각 ---------- */
-.kick{font-family:var(--fe);font-style:italic;font-size:14px;color:var(--dim);letter-spacing:.01em}
-.sec{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
-  display:flex;align-items:center;gap:10px;margin:34px 0 4px}
-.sec::after{content:"";flex:1;height:1px;background:var(--line)}
-.sec b{color:var(--ink);font-weight:600}
 .rd{width:24px;height:24px;border-radius:50%;border:1px solid var(--line2);display:inline-flex;
   align-items:center;justify-content:center;color:transparent;flex:0 0 auto}
 .rd:hover{border-color:var(--ink);color:var(--ink)}
 .rd.on{background:var(--ink);border-color:var(--ink);color:var(--onink)}
 .rd svg{width:11px;height:11px}
-.dmk{font-family:var(--fb);font-size:11.5px;font-weight:500;color:var(--danger);letter-spacing:0;white-space:nowrap}
+.dmk{font-family:var(--fb);font-size:11.5px;font-weight:600;color:var(--danger);letter-spacing:0;white-space:nowrap}
+.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.topnav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:env(safe-area-inset-top,0px);background:var(--paper)}
+.topnav .in{max-width:680px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px;min-height:48px}
+.topnav a{text-decoration:none;font-size:13.5px;font-weight:500;color:var(--ink);display:flex;align-items:center;min-height:44px}
+.topnav .sp{margin-left:auto}
+.topnav .rdl{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim)}
+/* 가운데 정렬 구역 머리: 위에 검정 실선, 영문 대문자 제목, 아래 한글 작은 설명 */
+.sx{text-align:center;margin:52px 0 6px;padding-top:24px;border-top:1px solid var(--ink)}
+.sx b{display:block;font-family:var(--fx);font-weight:400;font-size:25px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);line-height:1.1}
+.sx small{display:block;font-size:12px;color:var(--dim);margin-top:7px;letter-spacing:.02em}
 
 /* ---------- 홈: 표지 진열 ---------- */
 /* .cv 는 표지 사진이 없는 저널의 색 표지다. 사진이 있으면 .tile 을 쓴다. */
-.home{max-width:920px;margin:0 auto;padding:30px 16px 56px}
-.home .mast h1{font-family:var(--fd);font-weight:600;font-size:30px;line-height:1.15;color:var(--ink);margin:2px 0 0;letter-spacing:-.015em}
-.home .mast .rule{height:2px;background:var(--ink);margin:14px 0 0}
-.wks{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin:0 -16px;padding:0 16px}
+.home{max-width:920px;margin:0 auto;padding:34px 16px 56px}
+.home .mast{text-align:center}
+.home .mast .kick{font-family:var(--fe);font-style:italic;font-size:15px;color:var(--dim)}
+.home .mast h1{font-family:var(--fd);font-weight:400;font-size:34px;line-height:1.15;color:var(--ink);margin:4px 0 0;letter-spacing:-.01em}
+.home .mast .rule{height:1px;background:var(--ink);margin:18px 0 0}
+.wks{display:flex;justify-content:center;gap:20px;overflow-x:auto;scrollbar-width:none;padding:0 16px}
 .wks::-webkit-scrollbar{display:none}
-.wks a{flex:0 0 auto;text-decoration:none;font-family:var(--fe);font-size:15px;color:var(--dim);padding:11px 0 8px;
-  border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
-.wks a.on{color:var(--ink);border-color:var(--jc,var(--ink));font-weight:500}
-.home .wks{margin-top:4px}
-.hsum{font-size:13px;color:var(--dim);margin:14px 0 0}
+.wks a{flex:0 0 auto;text-decoration:none;font-family:var(--fe);font-style:italic;font-size:16px;color:var(--faint);padding:12px 0 6px;
+  border-bottom:1px solid transparent;white-space:nowrap}
+.wks a.on{color:var(--ink);border-color:var(--ink)}
+.home .wks{margin:0 -16px}
+.hsum{font-size:13px;color:var(--dim);margin:10px 0 0;text-align:center}
 .hsum b{color:var(--ink);font-weight:600}
-.grp{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:26px 0 10px}
+.grp{font-family:var(--fx);font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin:34px 0 14px;text-align:center}
+.grp small{display:block;font-family:var(--fb);font-size:11.5px;letter-spacing:.02em;text-transform:none;color:var(--dim);margin-top:3px}
 
-.covers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (min-width:700px){ .covers{gap:20px} }
+.covers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (min-width:700px){ .covers{gap:24px} }
 .cv{position:relative;display:flex;flex-direction:column;aspect-ratio:3/4;text-decoration:none;color:#fff;
-  background:var(--jc);border-radius:3px;padding:8% 9% 7%;overflow:hidden;box-shadow:var(--shadow);
+  background:var(--jc);border-radius:2px;padding:8% 9% 7%;overflow:hidden;box-shadow:var(--shadow);
   container-type:inline-size;transition:transform .15s ease}
-/* 왼쪽 책등 그늘: 잡지처럼 보이게 하는 장치. 평면 색 위에 아주 옅게 얹는다. */
 .cv::before{content:"";position:absolute;inset:0 auto 0 0;width:7%;background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(0,0,0,0))}
 .cv:active{transform:scale(.97)}
 @media (hover:hover){ .cv:hover{transform:translateY(-2px)} }
 .cv .vm{position:relative;font-size:max(10px,7.2cqw);letter-spacing:.08em;text-transform:uppercase;opacity:.82;font-weight:500;line-height:1.3}
 /* 이름 크기는 가장 긴 단어가 카드 폭에 들어가도록 저널마다 정한다(nmSize). 단어 중간에서 끊지 않는다. */
-.cv .nm{position:relative;font-family:var(--fe);font-weight:500;line-height:1.02;letter-spacing:-.015em;margin-top:7%}
+.cv .nm{position:relative;font-family:var(--fe);font-weight:400;line-height:1.02;letter-spacing:-.015em;margin-top:7%}
 .cv .rl{position:relative;height:1px;background:rgba(255,255,255,.55);margin:8% 0 0;width:38%}
-.cv .cl{position:relative;display:none;font-family:var(--fd);font-weight:500;font-size:max(11px,6.6cqw);line-height:1.5;margin-top:7%;opacity:.95;
-  -webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all}
-@container (min-width:170px){ .cv .cl{display:-webkit-box} }
 .cv .ft{position:relative;margin-top:auto;display:flex;align-items:baseline;gap:3px}
 .cv .ft b{font-family:var(--fe);font-weight:400;font-size:30cqw;line-height:.9;font-variant-numeric:lining-nums}
 .cv .ft small{font-size:max(11px,8cqw);opacity:.85}
 .cv .ft i{margin-left:auto;font-style:normal;font-size:max(10.5px,7.6cqw);opacity:.9;letter-spacing:.04em}
 .cv .ur{position:absolute;top:7%;right:8%;min-width:18px;height:18px;border-radius:9px;background:#fff;color:var(--jc);
-  font-size:11px;font-weight:600;line-height:18px;text-align:center;padding:0 5px;font-variant-numeric:lining-nums}
+  font-size:11px;font-weight:600;line-height:18px;text-align:center;padding:0 5px}
 .cv.off{background:var(--paper2);color:var(--faint);box-shadow:none;border-top:4px solid var(--jc)}
 .cv.off::before{display:none}
 .cv.off .rl{background:var(--line2)}
@@ -110,134 +122,124 @@ a{color:inherit}
 
 /* 진짜 표지가 있는 저널: 표지 사진 + 아래 캡션. 표지는 저널마다 한 장으로 고정이다(covers/). */
 .tile{display:flex;flex-direction:column;text-decoration:none;color:inherit;min-width:0}
-.tile .pic{position:relative;display:block;aspect-ratio:3/4;border-radius:3px;overflow:hidden;background:var(--jc);box-shadow:var(--shadow);
+.tile .pic{position:relative;display:block;aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:var(--jc);box-shadow:var(--shadow);
   transition:transform .15s ease}
 .tile .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
 .tile .pic::after{content:"";position:absolute;inset:0 auto 0 0;width:6%;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0))}
 .tile:active .pic{transform:scale(.97)}
-@media (hover:hover){ .tile:hover .pic{transform:translateY(-2px)} .tile:hover .nm{color:var(--mark)} }
+@media (hover:hover){ .tile:hover .pic{transform:translateY(-2px)} }
 .tile .ur{position:absolute;z-index:1;top:6px;right:6px;min-width:20px;height:20px;border-radius:10px;background:var(--jc);color:#fff;
-  box-shadow:0 0 0 2px #fff;font-size:11px;font-weight:600;line-height:20px;text-align:center;padding:0 6px;font-variant-numeric:lining-nums}
-.tile .cap{display:block;padding:9px 1px 0}
-.tile .bar{display:block;width:18px;height:2px;background:var(--jc);margin-bottom:6px}
-.tile .nm{display:block;font-family:var(--fe);font-weight:500;font-size:15px;line-height:1.15;color:var(--ink);letter-spacing:-.01em}
+  box-shadow:0 0 0 2px #fff;font-size:11px;font-weight:600;line-height:20px;text-align:center;padding:0 6px}
+.tile .cap{display:block;padding:10px 1px 0;text-align:center}
+.tile .nm{display:block;font-family:var(--fe);font-weight:400;font-size:15px;line-height:1.2;color:var(--ink)}
 .tile .ct{display:block;font-size:12px;color:var(--dim);margin-top:3px;line-height:1.4}
-.tile .ct b{font-family:var(--fe);font-weight:500;font-size:15px;color:var(--ink);font-variant-numeric:lining-nums}
-.tile .cy{display:block;font-size:11px;color:var(--faint);margin-top:2px;line-height:1.35;word-break:keep-all}
-@media (min-width:700px){ .tile .cy{font-size:12px} }
+.tile .ct b{font-family:var(--fe);font-weight:400;font-size:15px;color:var(--ink)}
+.tile .cy{display:block;font-size:11.5px;color:var(--faint);margin-top:1px;line-height:1.35;word-break:keep-all}
 .tile.off .pic{box-shadow:none;background:var(--paper2)}
 .tile.off .pic img{filter:grayscale(1);opacity:.4}
 .tile.off .nm{color:var(--dim)}
-@media (min-width:700px){ .tile .nm{font-size:19px} .tile .ct{font-size:13px} .tile .ct b{font-size:18px} .tile .cap{padding-top:12px} }
+@media (min-width:700px){ .tile .nm{font-size:19px} .tile .ct{font-size:13px} .tile .ct b{font-size:18px} .tile .cy{font-size:13px} .tile .cap{padding-top:13px} }
 
-.allbar{display:flex;align-items:baseline;gap:12px;margin-top:30px;padding:16px 2px 15px;border-top:2px solid var(--ink);
-  border-bottom:1px solid var(--line);text-decoration:none}
-.allbar .t{font-family:var(--fd);font-weight:600;font-size:19px;color:var(--ink)}
-.allbar .s{font-size:13px;color:var(--dim)}
-.allbar .n{margin-left:auto;font-family:var(--fe);font-size:16px;color:var(--dim);white-space:nowrap}
-@media (hover:hover){ .allbar:hover .t{color:var(--mark)} }
+.allbar{display:block;text-align:center;margin-top:44px;padding:22px 0 20px;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);text-decoration:none}
+.allbar .t{display:block;font-family:var(--fx);font-size:22px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.allbar .s{display:block;font-size:12.5px;color:var(--dim);margin-top:5px}
 .hfoot{display:flex;justify-content:space-between;gap:12px;margin-top:22px;font-size:12px;color:var(--faint)}
 .hfoot button{color:var(--dim);text-decoration:underline;text-underline-offset:3px}
 
 /* ---------- 저널 화면 ---------- */
-.jhead{background:var(--jc);background:color-mix(in srgb,var(--jc) 90%,#000);color:#fff;
-  margin-top:calc(-1 * env(safe-area-inset-top,0px));padding:calc(14px + env(safe-area-inset-top,0px)) 0 22px}
-.jin{max-width:720px;margin:0 auto;padding:0 16px}
-.jhead .bk{display:inline-flex;align-items:center;gap:6px;min-height:40px;font-size:14px;text-decoration:none;opacity:.9}
-.jhead .bk:hover{opacity:1}
-.jhead h1{font-family:var(--fe);font-weight:500;font-size:44px;line-height:1.02;letter-spacing:-.02em;margin:14px 0 0}
-.jhead .is{font-family:var(--fe);font-style:italic;font-size:16px;opacity:.92;margin-top:8px}
-.jtabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper)}
-/* 상태 표시줄 밑으로 글이 비치지 않게 고정 띠 위를 종이색으로 덮는다. */
-.jtabs::before,.pbar::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:env(safe-area-inset-top,0px);background:var(--paper)}
-.jtabs .wks{max-width:720px;margin:0 auto}
-.jbody{max-width:720px;margin:0 auto;padding:0 16px 40px}
-.lede{font-family:var(--fd);font-size:16px;line-height:1.85;color:var(--body);margin:24px 0 0;word-break:keep-all}
-/* 첫 글자 장식은 글자로 시작할 때만. 숫자(날짜)로 시작하면 어색하다. */
-.lede.dc::first-letter{float:left;font-family:var(--fd);font-weight:700;font-size:3.1em;line-height:.95;margin:6px 8px 0 0;color:var(--jc)}
-.jcnt{font-size:12.5px;color:var(--dim);margin-top:14px;display:flex;gap:16px;flex-wrap:wrap}
-.jcnt b{font-family:var(--fe);font-size:15px;color:var(--ink);font-weight:500;margin-left:3px}
-.cvs{margin-top:22px;padding:14px 16px;background:var(--paper2);border-left:3px solid var(--jc)}
-.cvs .lb{font-size:10.5px;font-weight:600;letter-spacing:.16em;color:var(--jc);text-transform:uppercase}
-.cvs .tt{font-family:var(--fd);font-weight:600;font-size:16px;color:var(--ink);line-height:1.5;margin-top:4px;word-break:keep-all}
-.cvs p{margin:6px 0 0;font-size:13.5px;color:var(--body);line-height:1.65}
+.jwrap{max-width:680px;margin:0 auto;padding:0 18px 48px}
+.jh{text-align:center;padding:30px 0 0}
+.jh .jcov{display:block;width:118px;aspect-ratio:3/4;object-fit:cover;object-position:top;margin:0 auto 18px;box-shadow:var(--shadow);border-radius:2px;background:var(--jc)}
+.jh h1{font-family:var(--fx);font-weight:400;font-size:38px;line-height:1.08;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);margin:0}
+.jh .is{font-family:var(--fe);font-style:italic;font-size:17px;color:#444;color:var(--body);margin-top:10px}
+.jh .cy{font-size:12px;color:var(--dim);margin-top:4px;letter-spacing:.02em}
+.jh .wks{margin:16px -18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.jh .wks a{padding:10px 0 8px}
+.ov{font-family:var(--fd);font-size:16.5px;line-height:1.9;color:var(--body);margin:18px 0 0;word-break:keep-all}
+.jcnt{display:flex;justify-content:center;gap:18px;font-size:12.5px;color:var(--dim);margin-top:18px}
+.jcnt b{font-family:var(--fe);font-weight:400;font-size:16px;color:var(--ink);margin-left:4px}
+.cvs{text-align:center;margin:30px 0 0;padding:20px 8px 0;border-top:1px solid var(--line)}
+.rb{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--ac)}
+.cvs .tt{font-family:var(--fd);font-size:19px;line-height:1.5;color:var(--ink);margin-top:6px;word-break:keep-all}
+.cvs p{margin:8px 0 0;font-size:13.5px;color:var(--dim);line-height:1.7;word-break:keep-all}
 
-.je{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;padding:18px 0 20px;border-bottom:1px solid var(--line);
+.je{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;padding:22px 0 22px;border-bottom:1px solid var(--line);
   text-decoration:none;color:inherit}
-.je .tg{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--jc);text-transform:uppercase}
-.je .tt{font-family:var(--fd);font-weight:600;font-size:19px;line-height:1.45;color:var(--ink);margin-top:5px;word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
-.je .en{font-family:var(--fe);font-style:italic;font-size:15px;color:var(--dim);line-height:1.4;margin-top:4px}
-.je .one{font-size:14.5px;color:var(--body);margin-top:8px;line-height:1.65}
-.je .th{width:96px;height:96px;object-fit:cover;object-position:top left;border:1px solid var(--line);background:#fff;margin-top:22px}
-@media (max-width:420px){ .je .th{width:76px;height:76px} }
-.je .ac{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-top:10px;font-size:12.5px;color:var(--faint)}
-.je .ac .rd{margin-left:auto}
-.je.done{opacity:.5}
-@media (hover:hover){ .je:hover .tt{color:var(--mark)} }
+.je:last-of-type{border-bottom:0}
+.je .tt{font-family:var(--fd);font-weight:400;font-size:21px;line-height:1.42;color:var(--ink);margin-top:6px;word-break:keep-all;overflow-wrap:anywhere}
+.je .en{font-family:var(--fe);font-style:italic;font-size:15.5px;color:var(--dim);line-height:1.38;margin-top:6px}
+.je .one{font-family:var(--fd);font-size:15px;color:var(--body);margin-top:10px;line-height:1.75;word-break:keep-all}
+.je .th{width:88px;height:88px;object-fit:cover;object-position:top left;background:#fff;margin-top:26px;border:1px solid var(--line)}
+@media (max-width:420px){ .je .th{width:72px;height:72px} }
+.je .by{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;color:var(--dim)}
+.je .by b{font-weight:600;color:var(--ink)}
+.je .by .rd{margin-left:auto}
+.je.done{opacity:.45}
+@media (hover:hover){ .je:hover .tt{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px} }
 
-.t2{display:grid;grid-template-columns:30px minmax(0,1fr) auto;column-gap:6px;align-items:start;padding:13px 0 14px;
+.t2{display:grid;grid-template-columns:28px minmax(0,1fr) auto;column-gap:8px;align-items:start;padding:16px 0 16px;
   border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
-.t2 .no{font-family:var(--fe);font-size:16px;color:var(--jc);line-height:1.5}
-.t2 .tt{font-family:var(--fd);font-weight:500;font-size:16px;line-height:1.5;color:var(--ink);word-break:keep-all;overflow-wrap:anywhere}
-.t2 .en{font-family:var(--fe);font-style:italic;font-size:14px;color:var(--dim);line-height:1.4;margin-top:2px}
+.t2 .no{font-family:var(--fe);font-size:17px;color:var(--ac);line-height:1.45}
+.t2 .tt{font-family:var(--fd);font-weight:400;font-size:17px;line-height:1.5;color:var(--ink);word-break:keep-all;overflow-wrap:anywhere}
+.t2 .en{font-family:var(--fe);font-style:italic;font-size:14.5px;color:var(--dim);line-height:1.38;margin-top:4px}
 .t2 .rd{margin-top:2px}
-.t2.done{opacity:.5}
-@media (hover:hover){ .t2:hover .tt{color:var(--mark)} }
+.t2.done{opacity:.45}
+@media (hover:hover){ .t2:hover .tt{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px} }
 
-details.ex{margin-top:34px;border-top:1px solid var(--line)}
-details.ex summary{list-style:none;cursor:pointer;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:14px 0}
+details.ex{margin-top:52px;border-top:1px solid var(--ink);text-align:center}
+details.ex summary{list-style:none;cursor:pointer;padding:24px 0 6px}
+details.ex summary b{display:block;font-family:var(--fx);font-weight:400;font-size:20px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
+details.ex summary small{display:block;font-size:12px;color:var(--dim);margin-top:6px}
 details.ex summary::-webkit-details-marker{display:none}
-details.ex summary::after{content:" +";font-family:var(--fe);letter-spacing:0}
-details.ex[open] summary::after{content:" −"}
-details.ex ul{margin:0;padding:0;list-style:none}
-details.ex li{font-family:var(--fe);font-size:15px;color:var(--dim);line-height:1.45;padding:7px 0;border-top:1px solid var(--line)}
+details.ex summary small::after{content:"  펼치기"}
+details.ex[open] summary small::after{content:"  접기"}
+details.ex ul{margin:10px 0 0;padding:0;list-style:none;text-align:left}
+details.ex li{font-family:var(--fe);font-size:15px;color:var(--dim);line-height:1.45;padding:9px 0;border-top:1px solid var(--line)}
 details.ex li a{text-decoration:none}
 
-.jnav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-top:40px;padding-top:12px;border-top:2px solid var(--ink);font-size:14px}
+.jnav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-top:52px;padding-top:14px;border-top:1px solid var(--ink);
+  font-family:var(--fe);font-size:15px}
 .jnav a{text-decoration:none;color:var(--ink);min-height:44px;display:flex;align-items:center}
 .jnav a.nx{justify-content:flex-end;text-align:right}
-.jnav .pg{font-family:var(--fe);font-style:italic;color:var(--dim)}
+.jnav .pg{font-style:italic;color:var(--dim)}
 .jnone{color:var(--dim);padding:48px 0;text-align:center}
 
 /* ---------- 논문 한 편 ---------- */
-.pbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
-.pbar .in{max-width:720px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px;min-height:50px}
-.pbar a{text-decoration:none;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:6px;min-height:44px}
-.pbar .rdl{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim)}
-.pv{max-width:720px;margin:0 auto;padding:22px 16px calc(100px + env(safe-area-inset-bottom,0px))}
-.pv .ey{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.pv .ey .j{color:var(--jc)}
-.pv .ey .t1{color:var(--mark)}
-.pv h1{font-family:var(--fd);font-weight:700;font-size:25px;line-height:1.42;color:var(--ink);margin:10px 0 0;letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere;text-wrap:balance}
-.pv .en{font-family:var(--fe);font-style:italic;font-size:18px;color:var(--dim);line-height:1.4;margin-top:8px}
-.pv .tags{font-size:12.5px;color:var(--faint);margin-top:10px}
-.pv .pull{font-family:var(--fd);font-weight:500;font-size:17px;line-height:1.7;color:var(--ink);margin:20px 0 0;padding:16px 0;
-  border-top:1px solid var(--ink);border-bottom:1px solid var(--line);word-break:keep-all}
+.pv{max-width:680px;margin:0 auto;padding:30px 18px calc(110px + env(safe-area-inset-bottom,0px))}
+.pv .hd{text-align:center}
+.pv .rb{font-size:12px;letter-spacing:.08em}
+.pv h1{font-family:var(--fd);font-weight:400;font-size:27px;line-height:1.42;color:var(--ink);margin:12px 0 0;word-break:keep-all;overflow-wrap:anywhere;text-wrap:balance}
+.pv .dek{font-family:var(--fe);font-style:italic;font-size:18.5px;color:var(--body);line-height:1.4;margin:12px auto 0;max-width:34em;text-wrap:balance}
+.pv .au{font-size:14px;font-weight:600;color:var(--ink);margin-top:18px;line-height:1.5}
+.pv .af{font-size:12.5px;color:var(--dim);margin-top:4px;line-height:1.6}
+.pv .mt{font-size:13px;color:var(--dim);margin-top:8px}
+.pv .lead-fig{margin:28px -18px 0}
+.pv .lead-fig img{border-left:0;border-right:0}
+.pv .lead-fig figcaption{padding:0 18px}
+.pv .pull{font-family:var(--fd);font-size:19px;line-height:1.65;color:var(--ink);text-align:center;margin:34px 0 0;padding:0 6px;word-break:keep-all}
+.pv .pull::before{content:"";display:block;width:36px;height:2px;background:var(--ac);margin:0 auto 16px}
 .acts{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--paper);border-top:1px solid var(--line);
   padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
-.acts .in{max-width:720px;margin:0 auto;display:flex;gap:10px}
-.acts a{flex:1;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;
-  border:1px solid var(--line2);color:var(--ink)}
-.acts a.pri{background:var(--ink);border-color:var(--ink);color:var(--onink)}
+.acts .in{max-width:680px;margin:0 auto;display:flex;gap:10px}
+.acts a{flex:1;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:2px;font-size:14.5px;font-weight:600;text-decoration:none;
+  border:1px solid var(--ink);color:var(--ink);letter-spacing:.02em}
+.acts a.pri{background:var(--ink);color:var(--onink)}
 
 /* 상세 본문 (논문 화면 + 전체 서가 공용) */
 .det{margin-top:16px;padding-top:4px;cursor:auto}
-.det h3{font-family:var(--fb);font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
-  margin:24px 0 8px;display:flex;align-items:center;gap:10px}
-.det h3::after{content:"";flex:1;height:1px;background:var(--line)}
+.det h3{font-family:var(--fb);font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--ac,var(--dim));margin:36px 0 10px}
 .det h3:first-child{margin-top:0}
-.det p{margin:0 0 8px;font-size:15px}
-.det .au{font-size:13px;color:var(--dim);line-height:1.6}
-.det .abs p{font-family:var(--fd);font-size:15px;line-height:1.9;color:var(--body)}
+.det p{margin:0 0 8px;font-family:var(--fd);font-size:16.5px;line-height:1.9;color:var(--body);word-break:keep-all}
+.det .au{font-family:var(--fb);font-size:13px;color:var(--dim);line-height:1.6}
 .kf{list-style:none;margin:0;padding:0;counter-reset:k}
-.kf li{position:relative;padding-left:30px;margin-bottom:10px;counter-increment:k;font-size:15px}
-.kf li::before{content:counter(k);position:absolute;left:0;top:1px;font-family:var(--fe);font-size:17px;color:var(--jc,var(--mark))}
-.lic{font-size:12px;color:var(--faint);margin-top:16px;line-height:1.55}
-figure{margin:14px 0 0}
+.kf li{position:relative;padding-left:32px;margin-bottom:14px;counter-increment:k;font-family:var(--fd);font-size:16px;line-height:1.85;color:var(--body);word-break:keep-all}
+.kf li::before{content:counter(k);position:absolute;left:0;top:-1px;font-family:var(--fe);font-size:20px;color:var(--ac,var(--mark))}
+.lic{font-family:var(--fb)!important;font-size:12px!important;color:var(--faint)!important;margin-top:28px!important;line-height:1.6!important}
+figure{margin:18px 0 0}
 figure img{width:100%;height:auto;display:block;border:1px solid var(--line);background:#fff}
-figcaption{font-size:12.5px;color:var(--dim);margin-top:7px;line-height:1.55}
-figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-right:6px}
-.det .links{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:13px}
+figcaption{font-size:12.5px;color:var(--dim);margin-top:8px;line-height:1.6}
+figcaption i{font-family:var(--fe);color:var(--ink);font-size:14px;margin-right:6px}
+.det .links{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px;font-size:13px}
 .det .links a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 
 /* ---------- 전체 서가 (예전 화면) ---------- */
@@ -251,8 +253,8 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
 .mast .home-l{display:inline-block;font-size:12.5px;color:var(--dim);text-decoration:none;margin-bottom:12px}
 .mast .home-l:hover{color:var(--ink)}
 .mast .kicker{font-family:var(--fe);font-style:italic;font-size:14px;color:var(--dim);letter-spacing:.01em}
-.mast h1{font-family:var(--fd);font-weight:600;font-size:26px;line-height:1.2;color:var(--ink);margin:2px 0 0;letter-spacing:-.01em}
-.mast .rule{height:2px;background:var(--ink);margin:14px 0 0}
+.mast h1{font-family:var(--fd);font-weight:400;font-size:26px;line-height:1.2;color:var(--ink);margin:2px 0 0;letter-spacing:-.01em}
+.mast .rule{height:1px;background:var(--ink);margin:14px 0 0}
 .mast .sum{font-size:12.5px;color:var(--dim);margin-top:10px;line-height:1.6}
 .mast .sum b{color:var(--ink);font-weight:600}
 
@@ -284,7 +286,7 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
 
 .week{margin-top:30px}
 .week:first-child{margin-top:22px}
-.week h2{font-family:var(--fd);font-weight:600;font-size:19px;word-break:keep-all;color:var(--ink);margin:0;display:flex;align-items:baseline;gap:12px}
+.week h2{font-family:var(--fd);font-weight:400;font-size:20px;word-break:keep-all;color:var(--ink);margin:0;display:flex;align-items:baseline;gap:12px}
 .week h2 small{font-family:var(--fe);font-weight:400;font-size:14px;color:var(--dim);margin-left:auto}
 .week .r{height:1px;background:var(--ink);margin:8px 0 4px}
 
@@ -293,25 +295,25 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
 .item.sel .ttl{color:var(--mark)}
 .item.done{opacity:.45}
 .item.ex{padding:9px 0 10px}
-.eye{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.eye{display:flex;align-items:center;gap:10px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600}
 .eye .j{color:var(--jc)}
 .eye .t1{color:var(--mark)}
 .eye .t2{color:var(--dim);font-weight:500}
 .eye .dm{color:var(--danger);font-weight:500;letter-spacing:.04em;text-transform:none}
 .eye .ty{font-weight:500;letter-spacing:.04em;text-transform:none;color:var(--faint)}
 .eye .rd{margin-left:auto;width:22px;height:22px}
-.ttl{font-family:var(--fd);font-weight:600;color:var(--ink);line-height:1.45;margin:7px 0 0;text-wrap:balance;letter-spacing:-.005em;word-break:keep-all;overflow-wrap:anywhere}
+.ttl{font-family:var(--fd);font-weight:400;color:var(--ink);line-height:1.45;margin:7px 0 0;text-wrap:balance;word-break:keep-all;overflow-wrap:anywhere}
 .item.t1 .ttl{font-size:20px}
-.item.t2 .ttl{font-size:16.5px;font-weight:500}
+.item.t2 .ttl{font-size:17px}
 .item.ex .ttl{font-family:var(--fe);font-weight:400;font-size:15px;color:var(--dim);margin-top:3px;letter-spacing:0}
 .item .en{font-family:var(--fe);font-style:italic;font-size:15px;color:var(--dim);line-height:1.4;margin-top:4px}
-.lead{margin:9px 0 0;color:var(--body);font-size:14.5px}
+.lead{margin:9px 0 0;color:var(--body);font-family:var(--fd);font-size:15px;line-height:1.7}
 .meta{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;margin-top:9px;font-size:12.5px;color:var(--faint)}
 .meta .tg{min-width:0}
 .meta a{color:var(--dim);text-decoration:none;white-space:nowrap;margin-left:auto}
 .meta a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .none{color:var(--dim);padding:56px 0;text-align:center}
-.main .det p, .pane .det p{font-size:14.5px}
+.main .det p, .pane .det p{font-size:15.5px}
 
 .pane{display:none}
 @media (min-width:1180px){
@@ -319,12 +321,12 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
     padding:28px 36px 60px;min-width:0;scrollbar-width:thin}
   .main .det{display:none}
 }
-.pane .empty{color:var(--faint);font-family:var(--fe);font-style:italic;font-size:16px;padding-top:40vh;text-align:center}
+.pane .empty{color:var(--faint);font-family:var(--fd);font-size:16px;padding-top:40vh;text-align:center}
 .pane .head .eye{font-size:11px}
-.pane .head .ttl{font-size:22px;cursor:auto}
+.pane .head .ttl{font-size:23px;cursor:auto}
 .pane .head .ttl:hover{color:var(--ink)}
-.pane .head .en{font-family:var(--fe);font-style:italic;font-size:15.5px;color:var(--dim);margin-top:4px}
-.pane .head .one{font-size:14.5px;color:var(--body);margin:12px 0 0;padding:10px 0 14px;border-bottom:1px solid var(--line)}
+.pane .head .en{font-family:var(--fe);font-style:italic;font-size:16px;color:var(--dim);margin-top:4px}
+.pane .head .one{font-family:var(--fd);font-size:15.5px;color:var(--body);margin:12px 0 0;padding:10px 0 14px;border-bottom:1px solid var(--line)}
 .pane .close{display:block;margin:-8px 0 10px auto;color:var(--faint);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
 .pane .close:hover{color:var(--ink)}
 
@@ -334,7 +336,7 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
   .main{padding:18px 16px 60px;max-width:none}
   .top{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
   .top .hb{font-size:14px;color:var(--ink);text-decoration:none;margin-right:2px}
-  .top h1{font-family:var(--fd);font-weight:600;font-size:22px;color:var(--ink);margin:0;line-height:1.2}
+  .top h1{font-family:var(--fd);font-weight:400;font-size:23px;color:var(--ink);margin:0;line-height:1.2}
   .top .k{font-family:var(--fe);font-style:italic;font-size:13px;color:var(--dim)}
   .top .fb{margin-left:auto;font-size:13px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
   /* 고정 시트는 루트의 안전 영역 여백을 받지 못한다. 위아래 여백을 시트가 직접 챙긴다. */
@@ -343,7 +345,7 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
   .sheet .rail{display:flex;position:static;height:auto;border:0;padding:0;overflow:visible;flex:0 0 auto}
   .sheet .mast{display:none}
   .sheet .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-  .sheet .sh h2{font-family:var(--fd);font-size:18px;color:var(--ink);margin:0}
+  .sheet .sh h2{font-family:var(--fd);font-weight:400;font-size:19px;color:var(--ink);margin:0}
   .sheet .sh button{font-size:14px;color:var(--ink);min-height:44px;min-width:44px;padding:8px 14px;
     border:1px solid var(--line2);border-radius:8px;margin-right:-6px}
   /* 아래쪽 닫기 바: 엄지가 닿는 자리. 스크롤해도 바닥에 붙어 있다. */
@@ -351,11 +353,11 @@ figcaption i{font-family:var(--fe);color:var(--ink);font-size:13.5px;margin-righ
     background:var(--paper);border-top:1px solid var(--line)}
   .sheet .sf button{display:block;width:100%;min-height:50px;font-size:15px;font-weight:600;
     color:var(--onink);background:var(--ink);border-radius:10px}
-  .item.t1 .ttl{font-size:18.5px}
+  .item.t1 .ttl{font-size:19px}
 }
 @media (min-width:861px){ .sheet{display:contents} .sheet .sh,.sheet .sf{display:none} }
 @media (prefers-reduced-motion:no-preference){ .item,.je,.t2{transition:opacity .15s} }
-@media (prefers-reduced-motion:reduce){ .cv{transition:none} }
+@media (prefers-reduced-motion:reduce){ .cv,.tile .pic{transition:none} }
 </style>
 
 </head>
@@ -417,11 +419,13 @@ var $ = function(s){ return document.querySelector(s); };
 function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 var DOW = ['일','월','화','수','목','금','토'];
+var MON = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 function dt(w){ return new Date(w+'T00:00:00'); }
 function kdate(w){ var d = dt(w); if(isNaN(d)) return w;
   return d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 '+DOW[d.getDay()]+'요일'; }
 function kshort(w){ var d = dt(w); if(isNaN(d)) return w;
   return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+DOW[d.getDay()]; }
+function edate(w){ var d = dt(w); if(isNaN(d)) return w; return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear(); }
 function dot(w){ var d = dt(w); if(isNaN(d)) return w;
   return ('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); }
 function minus7(w){ var d = dt(w); d.setDate(d.getDate()-7);
@@ -446,14 +450,18 @@ var EXTRA = Object.keys(HAS).filter(function(j){ return BIG3.indexOf(j)<0 && SIX
 var ORDER = BIG3.concat(SIX, EXTRA).filter(function(j){ return HAS[j]; });
 var WEEKS = Object.keys(P.reduce(function(a,p){ a[p.w]=1; return a; }, {})).sort().reverse();
 var HW = WEEKS[0] || '';
+/* 표지 밑과 저널 머리에 적는 갱신 주기. 빅3는 목요일 발행호로, 나머지는 월간(격주)지의 선공개를 매주 PubMed 등록일로 모은다. */
+var CYCLE = {'Nature':'주간 · 목요일호','Science':'주간 · 목요일호','Cell':'격주 · 목요일호',
+  'Cancer Cell':'월간 · 선공개 매주','Nature Cancer':'월간 · 선공개 매주','Cancer Discovery':'월간 · 선공개 매주',
+  'Molecular Cell':'격주 · 선공개 매주','Nature Genetics':'월간 · 선공개 매주','Cancer Communications':'월간 · 선공개 매주'};
 
 function byJW(j, w){ return P.filter(function(p){ return p.j===j && p.w===w; }).sort(function(a,b){ return a.i-b.i; }); }
 function weeksOf(j){ return WEEKS.filter(function(w){ return P.some(function(p){ return p.j===j && p.w===w; }); }); }
 function iss(j, w){ for(var i=0;i<ISS.length;i++) if(ISS[i].journal===j && ISS[i].week===w) return ISS[i]; return null; }
 function find(k){ for(var i=0;i<P.length;i++) if(kof(P[i])===k) return P[i]; return null; }
 function issueLine(j, w, I){
-  if(I && I.volume && I.issue) return 'Vol. '+esc(I.volume)+', No. '+esc(I.issue)+' · '+kdate(w);
-  return 'PubMed 등록 '+dot(minus7(w))+' – '+dot(w)+' · '+(I && I.volume ? 'Vol. '+esc(I.volume)+' 선공개' : '온라인 선공개');
+  if(I && I.volume && I.issue) return 'Vol. '+esc(I.volume)+', No. '+esc(I.issue)+' · '+edate(w);
+  return 'Online first, '+edate(minus7(w)).replace(/ \d{4}$/,'')+' – '+edate(w);
 }
 
 /* ---------- 홈 ---------- */
@@ -475,17 +483,11 @@ function cover(j){
   var I = iss(j, HW);
   var vm = (I && I.issue) ? 'No. '+esc(I.issue) : dot(HW)+' 선공개';
   var un = ps.filter(function(p){ return !READ[kof(p)]; }).length;
-  var lead = (t1[0] || ps[0]);
   return '<a class="cv" href="'+href+'" style="--jc:'+c+'" aria-label="'+esc(j)+', '+ps.length+'편">'+
     '<span class="vm">'+vm+'</span>'+(un ? '<span class="ur" title="안 읽음">'+un+'</span>' : '')+
     '<span class="nm"'+ns+' lang="en">'+esc(j)+'</span><span class="rl"></span>'+
-    '<span class="cl">'+esc(lead.ko || lead.en)+'</span>'+
     '<span class="ft"><b>'+ps.length+'</b><small>편</small><i>T1 '+t1.length+'</i></span></a>';
 }
-/* 표지 밑에 적는 갱신 주기. 빅3는 목요일 발행호로, 나머지는 월간(격주)지의 선공개를 매주 PubMed 등록일로 모은다. */
-var CYCLE = {'Nature':'주간 · 목요일호','Science':'주간 · 목요일호','Cell':'격주 · 목요일호',
-  'Cancer Cell':'월간 · 선공개 매주','Nature Cancer':'월간 · 선공개 매주','Cancer Discovery':'월간 · 선공개 매주',
-  'Molecular Cell':'격주 · 선공개 매주','Nature Genetics':'월간 · 선공개 매주','Cancer Communications':'월간 · 선공개 매주'};
 function cyc(j){ return CYCLE[j] ? '<span class="cy">'+CYCLE[j]+'</span>' : ''; }
 function tile(j){
   var src = (D.covers || {})[j];
@@ -496,14 +498,14 @@ function tile(j){
   if(!ps.length){
     var lw = weeksOf(j)[0];
     return '<a class="tile off" href="#/j/'+enc(j)+'" style="--jc:'+c+'" aria-label="'+esc(j)+', 이번 주 없음">'+
-      '<span class="pic">'+img+'</span><span class="cap"><span class="bar"></span><span class="nm" lang="en">'+esc(j)+'</span>'+
+      '<span class="pic">'+img+'</span><span class="cap"><span class="nm" lang="en">'+esc(j)+'</span>'+
       '<span class="ct">이번 주 없음'+(lw ? ' · 최근 '+dot(lw) : '')+'</span>'+cyc(j)+'</span></a>';
   }
   var t1 = ps.filter(function(p){ return p.t==='T1'; }).length;
   var un = ps.filter(function(p){ return !READ[kof(p)]; }).length;
   return '<a class="tile" href="#/j/'+enc(j)+'/'+HW+'" style="--jc:'+c+'" aria-label="'+esc(j)+', '+ps.length+'편">'+
     '<span class="pic">'+img+(un ? '<span class="ur" title="안 읽음">'+un+'</span>' : '')+'</span>'+
-    '<span class="cap"><span class="bar"></span><span class="nm" lang="en">'+esc(j)+'</span>'+
+    '<span class="cap"><span class="nm" lang="en">'+esc(j)+'</span>'+
     '<span class="ct"><b>'+ps.length+'</b>편 · 정독 '+t1+'</span>'+cyc(j)+'</span></a>';
 }
 function renderHome(){
@@ -517,73 +519,76 @@ function renderHome(){
     '<nav class="wks" aria-label="주차">'+WEEKS.map(function(w){
       return '<a href="#/w/'+w+'"'+(w===HW?' class="on" aria-current="true"':'')+'>'+dot(w)+'</a>'; }).join('')+'</nav>'+
     '<p class="hsum">'+kdate(HW)+' · <b>'+tot.length+'</b>편, 정독 <b>'+t1+'</b>편</p>'+
-    (big.length ? '<div class="grp">빅3</div><div class="covers">'+big.map(tile).join('')+'</div>' : '')+
-    (rest.length ? '<div class="grp">암·오믹스</div><div class="covers">'+rest.map(tile).join('')+'</div>' : '')+
-    '<a class="allbar" href="#/all"><span class="t">전체 서가</span><span class="s">검색과 필터</span><span class="n">'+all+'편 →</span></a>'+
+    (big.length ? '<div class="grp">The Big Three<small>빅3 · 목요일 발행호</small></div><div class="covers">'+big.map(tile).join('')+'</div>' : '')+
+    (rest.length ? '<div class="grp">Cancer &amp; Omics<small>암·오믹스 · 매주 선공개 모음</small></div><div class="covers">'+rest.map(tile).join('')+'</div>' : '')+
+    '<a class="allbar" href="#/all"><span class="t">All Papers</span><span class="s">전체 서가 '+all+'편 · 검색과 필터</span></a>'+
     '<div class="hfoot"><span>갱신 '+esc(D.generated)+'</span><button data-theme-toggle="1">'+themeLabel()+'</button></div>';
 }
 
 /* ---------- 저널 ---------- */
 function tagLine(p){ return (p.tags||[]).slice(0,3).map(esc).join(' · '); }
+function firstAu(p){ var a = String(p.au||'').split(',')[0].trim(); return a ? a+(String(p.au).indexOf(',')>=0 ? ' 외' : '') : ''; }
 function renderJour(j, w){
   var ws = weeksOf(j);
   if(!ws.length){ location.replace('#/'); return; }
   if(ws.indexOf(w) < 0) w = ws[0];
-  var c = JC[j] || '#777', I = iss(j, w), ps = byJW(j, w);
+  var c = JC[j] || '#777', I = iss(j, w), ps = byJW(j, w), cv = (D.covers || {})[j];
   var T1 = ps.filter(function(p){ return p.t==='T1'; }), T2 = ps.filter(function(p){ return p.t==='T2'; }),
       EX = ps.filter(function(p){ return p.t==='EX'; });
   var oi = ORDER.indexOf(j), pj = ORDER[(oi-1+ORDER.length)%ORDER.length], nj = ORDER[(oi+1)%ORDER.length];
   var navTo = function(x){ return '#/j/'+enc(x)+(weeksOf(x).indexOf(w)>=0 ? '/'+w : ''); };
 
-  var h = '<header class="jhead" style="--jc:'+c+'"><div class="jin">'+
-    '<a class="bk" href="#/">← 표지 진열</a>'+
-    '<h1 lang="en">'+esc(j)+'</h1><div class="is">'+issueLine(j, w, I)+'</div></div></header>'+
-    '<div class="jtabs" style="--jc:'+c+'"><nav class="wks" aria-label="주차">'+ws.map(function(x){
-      return '<a href="#/j/'+enc(j)+'/'+x+'"'+(x===w?' class="on" aria-current="true"':'')+'>'+dot(x)+'</a>'; }).join('')+'</nav></div>'+
-    '<div class="jbody" style="--jc:'+c+'">';
-  if(I && I.overview) h += '<p class="lede'+(/^[가-힣A-Za-z]/.test(I.overview) ? ' dc' : '')+'">'+esc(I.overview)+'</p>';
+  var h = '<nav class="topnav"><div class="in"><a href="#/">← 서가</a><a class="sp" href="#/all">전체 서가</a></div></nav>'+
+    '<div class="jwrap acc" style="--jc:'+c+'"><header class="jh">'+
+    (cv ? '<img class="jcov" src="'+esc(cv)+'" alt="">' : '')+
+    '<h1 lang="en">'+esc(j)+'</h1><div class="is">'+issueLine(j, w, I)+'</div>'+
+    (CYCLE[j] ? '<div class="cy">'+CYCLE[j]+'</div>' : '')+
+    '<nav class="wks" aria-label="주차">'+ws.map(function(x){
+      return '<a href="#/j/'+enc(j)+'/'+x+'"'+(x===w?' class="on" aria-current="true"':'')+'>'+dot(x)+'</a>'; }).join('')+'</nav></header>';
+  if(I && I.overview) h += '<p class="ov">'+esc(I.overview)+'</p>';
   h += '<div class="jcnt"><span>정독<b>'+T1.length+'</b></span><span>훑어보기<b>'+T2.length+'</b></span>'+
        (EX.length ? '<span>분야 제외<b>'+EX.length+'</b></span>' : '')+'</div>';
   if(I && I.cover && (I.cover.title_ko || I.cover.title_en)){
-    h += '<div class="cvs"><div class="lb">표지 논문</div><div class="tt">'+esc(I.cover.title_ko || I.cover.title_en)+'</div>'+
+    h += '<div class="cvs"><div class="rb">표지 논문</div><div class="tt">'+esc(I.cover.title_ko || I.cover.title_en)+'</div>'+
          (I.cover.note ? '<p>'+esc(I.cover.note)+'</p>' : '')+'</div>';
   }
   if(T1.length){
-    h += '<div class="sec">Tier 1 · 정독 <b>'+T1.length+'</b></div>';
+    h += '<h2 class="sx"><b>Tier One</b><small>정독 '+T1.length+'편</small></h2>';
     h += T1.map(function(p){
       var k = kof(p), f = (p.figs||[])[0];
       return '<a class="je'+(READ[k]?' done':'')+'" href="#/p/'+enc(k)+'"><div>'+
-        '<div class="tg">'+tagLine(p)+'</div>'+
+        '<div class="rb">'+tagLine(p)+'</div>'+
         '<div class="tt">'+esc(p.ko || p.en)+'</div>'+
         (p.en && p.ko ? '<div class="en">'+esc(p.en)+'</div>' : '')+
         (p.one ? '<div class="one">'+esc(p.one)+'</div>' : '')+'</div>'+
         (f ? '<img class="th" loading="lazy" src="'+esc(f.src)+'" alt="">' : '<span></span>')+
-        '<div class="ac"><span>'+esc(p.type || '')+(p.au ? ' · '+esc(String(p.au).split(',')[0]) : '')+'</span>'+rdBtn(p)+'</div></a>';
+        '<div class="by"><b>'+esc(firstAu(p))+'</b><span>'+esc(p.type || '')+'</span>'+rdBtn(p)+'</div></a>';
     }).join('');
   }
   if(T2.length){
-    h += '<div class="sec">Tier 2 · 훑어보기 <b>'+T2.length+'</b></div>';
+    h += '<h2 class="sx"><b>Tier Two</b><small>훑어보기 '+T2.length+'편</small></h2>';
     h += T2.map(function(p, n){
       var k = kof(p);
-      return '<a class="t2'+(READ[k]?' done':'')+'" href="#/p/'+enc(k)+'"><span class="no">'+('0'+(n+1)).slice(-2)+'</span><div>'+
+      return '<a class="t2'+(READ[k]?' done':'')+'" href="#/p/'+enc(k)+'"><span class="no">'+(n+1)+'</span><div>'+
         '<div class="tt">'+esc(p.ko || p.en)+(p.dem ? ' <span class="dmk">전문 못 구함</span>' : '')+'</div>'+
         (p.en && p.ko ? '<div class="en">'+esc(p.en)+'</div>' : '')+'</div>'+rdBtn(p, true)+'</a>';
     }).join('');
   }
   if(EX.length){
-    h += '<details class="ex"><summary>분야 제외 '+EX.length+'편</summary><ul>'+EX.map(function(p){
+    h += '<details class="ex"><summary><b>Also in the Issue</b><small>분야 제외 '+EX.length+'편</small></summary><ul>'+EX.map(function(p){
       var t = esc(p.en || p.ko);
       return '<li>'+(p.doi ? '<a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">'+t+'</a>' : t)+'</li>'; }).join('')+'</ul></details>';
   }
   if(!ps.length) h += '<div class="jnone">이 주차에 실린 논문이 없다.</div>';
-  h += '<nav class="jnav"><a href="'+navTo(pj)+'">← '+esc(pj)+'</a><span class="pg">'+(oi+1)+' / '+ORDER.length+'</span>'+
+  h += '<nav class="jnav"><a href="'+navTo(pj)+'">← '+esc(pj)+'</a><span class="pg">'+(oi+1)+' of '+ORDER.length+'</span>'+
        '<a class="nx" href="'+navTo(nj)+'">'+esc(nj)+' →</a></nav></div>';
   $('#vJour').innerHTML = h;
 }
 
 /* ---------- 논문 한 편 ---------- */
-function detail(p, noAu){
-  var figs = (p.figs||[]).map(function(f){
+function detail(p, opt){
+  opt = opt || {};
+  var figs = (p.figs||[]).slice(opt.skipFig ? 1 : 0).map(function(f){
     return '<figure><img loading="lazy" src="'+esc(f.src)+'" alt="'+esc(f.label)+'">'+
            '<figcaption><i>'+esc(f.label)+'</i>'+esc(f.cap)+'</figcaption></figure>'; }).join('');
   var kf = (p.kf||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('');
@@ -592,8 +597,8 @@ function detail(p, noAu){
   if(p.url) links += '<a href="'+esc(p.url)+'" target="_blank" rel="noopener">원문 ↗</a>';
   if(p.doi) links += '<a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">DOI '+esc(p.doi)+'</a>';
   return [
-    (!noAu && p.au) ? '<h3>저자</h3><p class="au">'+esc(p.au)+(p.aff?'<br>'+esc(p.aff):'')+'</p>' : '',
-    p.ab ? '<h3>초록</h3><div class="abs"><p>'+esc(p.ab)+'</p></div>' : '',
+    (!opt.noAu && p.au) ? '<h3>저자</h3><p class="au">'+esc(p.au)+(p.aff?'<br>'+esc(p.aff):'')+'</p>' : '',
+    p.ab ? '<h3>초록</h3><p>'+esc(p.ab)+'</p>' : '',
     p.bg ? '<h3>연구 질문</h3><p>'+esc(p.bg)+'</p>' : '',
     p.ap ? '<h3>접근 방법</h3><p>'+esc(p.ap)+'</p>' : '',
     kf ? '<h3>핵심 결과</h3><ol class="kf">'+kf+'</ol>' : '',
@@ -608,22 +613,24 @@ function detail(p, noAu){
 function renderPaper(k){
   var p = find(k);
   if(!p){ location.replace('#/'); return; }
-  var c = JC[p.j] || '#777';
-  var tier = p.t==='T1' ? '<span class="t1">Tier 1</span>' : '<span>Tier 2</span>';
+  var c = JC[p.j] || '#777', f = (p.figs||[])[0];
   var acts = '';
   if(D.msBase && p.ms) acts += '<a class="pri" href="'+esc(D.msBase+p.ms)+'" target="_blank" rel="noopener">원고 PDF</a>';
   if(p.doi) acts += '<a'+(acts?'':' class="pri"')+' href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">원문 DOI</a>';
   else if(p.url) acts += '<a'+(acts?'':' class="pri"')+' href="'+esc(p.url)+'" target="_blank" rel="noopener">원문</a>';
+  var rub = esc(p.j)+' · '+(p.t==='T1' ? 'Tier 1' : 'Tier 2')+(p.tags && p.tags[0] ? ' · '+esc(p.tags[0]) : '');
   $('#vPaper').innerHTML =
-    '<div class="pbar"><div class="in"><a href="#/j/'+enc(p.j)+'/'+p.w+'">← '+esc(p.j)+' · '+dot(p.w)+'</a>'+
-    '<span class="rdl">읽음 '+rdBtn(p)+'</span></div></div>'+
-    '<article class="pv" style="--jc:'+c+'"><div class="ey"><span class="j">'+esc(p.j)+'</span>'+tier+
-    (p.type ? '<span>'+esc(p.type)+'</span>' : '')+(p.dem ? '<span class="dmk">전문 못 구함</span>' : '')+'</div>'+
-    '<h1>'+esc(p.ko || p.en)+'</h1>'+(p.en && p.ko ? '<div class="en">'+esc(p.en)+'</div>' : '')+
-    (p.tags && p.tags.length ? '<div class="tags">'+p.tags.map(esc).join(' · ')+'</div>' : '')+
-    (p.au ? '<p style="margin:12px 0 0;font-size:13px;color:var(--dim);line-height:1.6">'+esc(p.au)+(p.aff ? '<br>'+esc(p.aff) : '')+'</p>' : '')+
+    '<nav class="topnav"><div class="in"><a href="#/j/'+enc(p.j)+'/'+p.w+'">← '+esc(p.j)+'</a>'+
+    '<span class="rdl">읽음 '+rdBtn(p)+'</span></div></nav>'+
+    '<article class="pv acc" style="--jc:'+c+'"><div class="hd">'+
+    '<div class="rb">'+rub+(p.dem ? ' &nbsp;<span class="dmk">전문 못 구함</span>' : '')+'</div>'+
+    '<h1>'+esc(p.ko || p.en)+'</h1>'+(p.en && p.ko ? '<p class="dek">'+esc(p.en)+'</p>' : '')+
+    (p.au ? '<div class="au">'+esc(p.au)+'</div>' : '')+
+    (p.aff ? '<div class="af">'+esc(p.aff)+'</div>' : '')+
+    '<div class="mt">'+esc(p.type || '')+(p.type ? ' · ' : '')+kdate(p.w)+'</div></div>'+
+    (f ? '<figure class="lead-fig"><img src="'+esc(f.src)+'" alt="'+esc(f.label)+'"><figcaption><i>'+esc(f.label)+'</i>'+esc(f.cap)+'</figcaption></figure>' : '')+
     (p.one ? '<p class="pull">'+esc(p.one)+'</p>' : '')+
-    '<div class="det">'+detail(p, true)+'</div></article>'+
+    '<div class="det" style="margin-top:40px">'+detail(p, {noAu:true, skipFig:true})+'</div></article>'+
     (acts ? '<div class="acts"><div class="in">'+acts+'</div></div>' : '');
 }
 
@@ -698,7 +705,7 @@ function item(p){
   var link = (D.msBase && p.ms) ? '<a href="'+esc(D.msBase+p.ms)+'" target="_blank" rel="noopener">원고 PDF ↗</a>'
            : p.url ? '<a href="'+esc(p.url)+'" target="_blank" rel="noopener">원문 ↗</a>'
            : p.doi ? '<a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">DOI ↗</a>' : '';
-  return '<article class="'+cls+'" style="--jc:'+c+'" data-k="'+esc(k)+'">'+eye(p,true)+
+  return '<article class="'+cls+' acc" style="--jc:'+c+'" data-k="'+esc(k)+'">'+eye(p,true)+
     '<h2 class="ttl">'+esc(p.ko || p.en)+'</h2>'+
     (p.en && p.ko ? '<div class="en">'+esc(p.en)+'</div>' : '')+
     (p.one ? '<p class="lead">'+esc(p.one)+'</p>' : '')+
@@ -736,9 +743,9 @@ function render(){
 function pane(p){
   var el = $('#pane');
   if(!p){ el.innerHTML = '<div class="empty">제목을 고르면 여기에 펼쳐진다</div>'; return; }
-  el.innerHTML = '<button class="close" id="pClose">닫기</button><div class="head" style="--jc:'+(JC[p.j]||'#777')+'">'+eye(p,false)+
+  el.innerHTML = '<button class="close" id="pClose">닫기</button><div class="head acc" style="--jc:'+(JC[p.j]||'#777')+'">'+eye(p,false)+
     '<h2 class="ttl">'+esc(p.ko||p.en)+'</h2>'+(p.en&&p.ko?'<div class="en">'+esc(p.en)+'</div>':'')+
-    (p.one?'<p class="one">'+esc(p.one)+'</p>':'')+'</div><div class="det" style="--jc:'+(JC[p.j]||'#777')+'">'+detail(p)+'</div>';
+    (p.one?'<p class="one">'+esc(p.one)+'</p>':'')+'</div><div class="det acc" style="--jc:'+(JC[p.j]||'#777')+'">'+detail(p)+'</div>';
   el.scrollTop = 0;
 }
 function wide(){ return window.matchMedia('(min-width:1180px)').matches; }
@@ -861,7 +868,6 @@ window.addEventListener('hashchange', route);
 route();
 })();
 </script>
-
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
