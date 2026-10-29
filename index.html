@@ -515,7 +515,7 @@ function renderHome(){
   var big = ORDER.filter(function(j){ return BIG3.indexOf(j)>=0; });
   var rest = ORDER.filter(function(j){ return BIG3.indexOf(j)<0; });
   $('#vHome').innerHTML =
-    '<header class="mast"><div class="kick">Weekly Journal Digest</div><h1>저널 서가</h1><div class="rule"></div></header>'+
+    '<header class="mast"><div class="kick">Weekly Journal Digest</div><div class="rule"></div></header>'+
     '<nav class="wks" aria-label="주차">'+WEEKS.map(function(w){
       return '<a href="#/w/'+w+'"'+(w===HW?' class="on" aria-current="true"':'')+'>'+dot(w)+'</a>'; }).join('')+'</nav>'+
     '<p class="hsum">'+kdate(HW)+' · <b>'+tot.length+'</b>편, 정독 <b>'+t1+'</b>편</p>'+
